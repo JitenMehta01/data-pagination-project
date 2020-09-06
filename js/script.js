@@ -4,6 +4,7 @@ const itemsPerpage = 9; // how many students on each page
 
 const listContainer = document.querySelector('.student-list'); // ul containing list items
 
+const buttonContainer = document.querySelector('.link-list') // ul containing pagination buttons
 
 /*************************************************************************************************************************************************************
  * 
@@ -77,11 +78,60 @@ function studentBuild (student){ // a function containing a template literal. Th
 
 /*********************************************************************************************************************************************************************************** */
 
+
+
+
 /*
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
 
+function addPagination (list) {
+
+  const noOfButtons = Math.round(list.length/itemsPerpage); // this calculates the amount of objects in the data list. Then divides it by the value of the iutemsperpage.
+                                                            // The math.round rounds the above calculation to the nearest integer.
+  
+  buttonContainer.innerHTML = ''; // This clears the button ul container. Making sure there is nothing there before we append the buttons.
+
+  for(let i =1; i <= noOfButtons; i++){
+    const button = `
+    <li>
+    <button type="button">${i}</button>
+    </li>
+    `;
+    buttonContainer.insertAdjacentHTML('beforeend', button); // This loop adds list items to the buttoContainer variable depending on the value of the noOfButtons variable.
+  }
+
+
+  const firstButton = buttonContainer.children[0];
+  firstButton.children[0].className = 'active'; // This sets the first button, which is 1, with is a class of active. This indicates that the first page will be on view when it is loaded.
+
+  buttonContainer.addEventListener('click', (e) =>{ // an event listener for the ulButton Container
+
+    const pageNo = e.target.textContent; // this receives textContent of the button the user has clicked on. I.e the number.
+
+    if(e.target.tagName === 'BUTTON'){ // this if statement checks if the user has clicked on a button within the container
+
+        const pagButtons = buttonContainer.querySelectorAll('li button'); // this stores all the buttons in the container in this varable
+
+
+        for(let i=0; i < pagButtons.length; i++){ // This loop will remove all buttons with class of active
+          if(pagButtons[i].className === 'active'){
+            pagButtons[i].classList.remove('active');
+          }
+        }
+
+        e.target.className = 'active'; // This will set whatever button the user has clicked as active
+    }
+    showPage(data,parseInt(pageNo)); // the second arguement takes the number from the button the user has clicked on. 
+
+  })
+}
 
 
 // Call functions
+
+
+showPage(data, 1)
+addPagination(data);
+
