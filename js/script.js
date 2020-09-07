@@ -1,4 +1,8 @@
-// variables
+/*
+
+VARIABLES
+
+************************************************************************************************************************************************************/
 
 const itemsPerpage = 9; // how many students on each page
 
@@ -6,11 +10,16 @@ const listContainer = document.querySelector('.student-list'); // ul containing 
 
 const buttonContainer = document.querySelector('.link-list') // ul containing pagination buttons
 
+const header = document.querySelector('header');
+
+
+
 /*************************************************************************************************************************************************************
  * 
  * 
  * 
-showPage function
+ * 
+SHOWPAGE FUNCTION
 
 - The aim of this function is to pull 9 objects from the data array and display them to the DOM. The properties and value from the object will be used to create a list item about a student.
 
@@ -45,6 +54,7 @@ function showPage (list, page){ // 2 args. first represents the data. The secone
 
   for(let i =0; i < list.length; i++){ // loops over the data
     if(i >= startIndex && i < endIndex){  // the code block in the if statement will only run if the value of i more or equal to the startIndex and less then the endIndex.
+      
       let student = studentBuild(list[i]); // calls the studentBuild function and passes a object from the data arrray as an arguement. The i indicates which student will be through.
       listContainer.insertAdjacentHTML('beforeend', student); // The studentBuild function will return a list items. THis needs to be appended to the DOM.
     } 
@@ -77,8 +87,7 @@ function studentBuild (student){ // a function containing a template literal. Th
  * 
  * 
  * 
-addPagination function
-
+ADDPAGINATION FUNCTION
 
 * - The aim of this function is to append page buttons to the DOM. The buttons will have a click events. Once clicked, the set of list items on the page will change.
 
@@ -140,9 +149,76 @@ function addPagination (list) {
     showPage(data,parseInt(pageNo)); // the second arguement takes the number from the button the user has clicked on. 
   });
 }
-// Call functions
+
+
+/*************************************************************************************************************************************************************
+ * 
+ * 
+ * 
+CALL FUNCTIONS
+
+*/
 
 
 showPage(data, 1)
 addPagination(data);
+searchbarHTML();
 
+
+/************************************************************************************************************************************************************* /
+ * 
+ * SEARCHBAR FUNCTIONALITY
+ *  
+ */
+ 
+
+ // create an an epmpty array. Then pus all 9 students that are displayed on the to this array
+ // create a variable containing the value of the searchbar in lowercase
+ // create a variable containing the value of the first and last name in lowercase
+
+ // then create a keyup event listener to the searchbar
+
+ // in the event, compare the value of searchbar to the first and last name of each student(list item)
+
+ // if (searbar.value !== list[i]){
+ //   list[i].display = 'none'
+ //} else{
+ //} list[i].display = 'block';
+
+// APPENDING SEARCH TO DOM
+
+function searchbarHTML(){
+  const searchbarHTML = `
+  <label for="search" class="student-search">
+    <input id="search" placeholder="Search by name...">
+    <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+  </label>
+  `;
+
+  header.insertAdjacentHTML('afterbegin', searchbarHTML);
+
+  const label = document.querySelector('.student-search');
+  label.style.order = '1';
+
+
+  // filtering names in the searchBar
+  const searchBar = label.querySelector('input');
+  const student = document.querySelectorAll('.student-item');
+  const studentName = document.querySelectorAll('.student-details h3');
+  searchBar.addEventListener('keyup', (e) =>{
+    for(let i =0; i < student.length; i++){
+      if(e.target.value.toLowerCase() === studentName[i].textContent.toLowerCase()){
+        student[i].style.display = 'block';
+      } else{
+        student[i].style.display = 'none';
+      }
+    }
+  })
+
+
+}
+
+
+
+
+ /*************************************************************************************************************************************************************/
