@@ -53,15 +53,19 @@ function showPage (list, page){ // 2 args. first represents the data. The secone
   listContainer.innerHTML = ''; // clears the ul container holding the list items.
 
   for(let i =0; i < list.length; i++){ // loops over the data
+    listContainer.insertAdjacentHTML('beforeend', studentBuild(list[i])); // The studentBuild function will return a list items. This needs to be appended to the DOM.
+    const item = document.querySelectorAll('.student-item');
     if(i >= startIndex && i < endIndex){  // the code block in the if statement will only run if the value of i more or equal to the startIndex and less then the endIndex.
-      
-      let student = studentBuild(list[i]); // calls the studentBuild function and passes a object from the data arrray as an arguement. The i indicates which student will be through.
-      listContainer.insertAdjacentHTML('beforeend', student); // The studentBuild function will return a list items. THis needs to be appended to the DOM.
-    } 
+      item[i].style.display = 'block';
+    } else{
+      item[i].style.display = 'none';
+    }
   }
 }
 
+// in the for loop append all list items to the DOM
 
+// then in the if condition, only display items that are within the index.
 
 
 function studentBuild (student){ // a function containing a template literal. This is how each student will be appended to the DOM.
@@ -147,6 +151,8 @@ function addPagination (list) {
         e.target.className = 'active'; // This will set whatever button the user has clicked as active
     }
     showPage(data,parseInt(pageNo)); // the second arguement takes the number from the button the user has clicked on. 
+
+    return console.log(typeof parseInt(pageNo));
   });
 }
 
@@ -207,7 +213,9 @@ function searchbarHTML(){
   const studentName = document.querySelectorAll('.student-details h3');
   searchBar.addEventListener('keyup', (e) =>{
     for(let i =0; i < student.length; i++){
-      if(e.target.value.toLowerCase() === studentName[i].textContent.toLowerCase()){
+      const searchBarvalue = e.target.value.toLowerCase();
+      const studentName = document.querySelectorAll('.student-details h3')[i].textContent.toLowerCase();
+      if(studentName.includes(searchBarvalue)){
         student[i].style.display = 'block';
       } else{
         student[i].style.display = 'none';
