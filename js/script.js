@@ -150,9 +150,9 @@ function addPagination (list) {
         }
         e.target.className = 'active'; // This will set whatever button the user has clicked as active
     }
-    showPage(data,parseInt(pageNo)); // the second arguement takes the number from the button the user has clicked on. 
+    showPage(list,parseInt(pageNo)); // the second arguement takes the number from the button the user has clicked on. 
 
-    return console.log(typeof parseInt(pageNo));
+    return console.log( parseInt(pageNo));
   });
 }
 
@@ -211,18 +211,18 @@ function searchbarHTML(){
   const searchBar = label.querySelector('input');
   const student = document.querySelectorAll('.student-item');
   const studentName = document.querySelectorAll('.student-details h3');
+  let newStudents = [];
   searchBar.addEventListener('keyup', (e) =>{
+
     for(let i =0; i < student.length; i++){
       const searchBarvalue = e.target.value.toLowerCase();
       const studentName = document.querySelectorAll('.student-details h3')[i].textContent.toLowerCase();
       if(studentName.includes(searchBarvalue)){
-        student[i].style.display = 'block';
-      } else{
-        student[i].style.display = 'none';
+        newStudents.push(student[i]);
       }
     }
   })
-
+return console.log(newStudents);
 
 }
 
