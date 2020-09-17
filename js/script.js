@@ -209,20 +209,21 @@ function searchbarHTML(){
 
   // filtering names in the searchBar
   const searchBar = label.querySelector('input');
-  const student = document.querySelectorAll('.student-item');
-  const studentName = document.querySelectorAll('.student-details h3');
-  let newStudents = [];
-  searchBar.addEventListener('keyup', (e) =>{
+  let newStudents = []; // empty array. Data items will be pushed to this array everytime the user types in a letter. It will also refresh eveytime a user types in a letter.
 
+  searchBar.addEventListener('keyup', (e) =>{ //  a keyup event for the search bar.
+    const student = document.querySelectorAll('.student-item'); // collecting all student items on page
+    console.log(student);
+    newStudents = []; // resetting the newStudents varbiable before it enters the if statement down below.
     for(let i =0; i < student.length; i++){
       const searchBarvalue = e.target.value.toLowerCase();
       const studentName = document.querySelectorAll('.student-details h3')[i].textContent.toLowerCase();
       if(studentName.includes(searchBarvalue)){
-        newStudents.push(student[i]);
+        newStudents.push(data[i]);
       }
     }
+    showPage(newStudents, 1); 
   })
-return console.log(newStudents);
 
 }
 
