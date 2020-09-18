@@ -53,13 +53,9 @@ function showPage (list, page){ // 2 args. first represents the data. The secone
   listContainer.innerHTML = ''; // clears the ul container holding the list items.
 
   for(let i =0; i < list.length; i++){ // loops over the data
-    listContainer.insertAdjacentHTML('beforeend', studentBuild(list[i])); // The studentBuild function will return a list items. This needs to be appended to the DOM.
-    const item = document.querySelectorAll('.student-item');
     if(i >= startIndex && i < endIndex){  // the code block in the if statement will only run if the value of i more or equal to the startIndex and less then the endIndex.
-      item[i].style.display = 'block';
-    } else{
-      item[i].style.display = 'none';
-    }
+      listContainer.insertAdjacentHTML('beforeend', studentBuild(list[i])); // The studentBuild function will return a list items. This needs to be appended to the DOM.
+    } 
   }
 }
 
@@ -125,7 +121,7 @@ ADDPAGINATION FUNCTION
 
 function addPagination (list) {
 
-  const noOfButtons = Math.round(list.length/itemsPerpage); // This dynamically creates a number value depending on the length of the data list and the value of itemsperPage
+  const noOfButtons = Math.ceil(list.length/itemsPerpage); // This dynamically creates a number value depending on the length of the data list and the value of itemsperPage
   buttonContainer.innerHTML = ''; // This clears the button ul container. Making sure there is nothing there before we append the buttons.
 
   for(let i =1; i <= noOfButtons; i++){ // This loop appends a list item and button to the DOM. The condition depends on the value of noOfButtons
@@ -149,8 +145,8 @@ function addPagination (list) {
           }
         }
         e.target.className = 'active'; // This will set whatever button the user has clicked as active
+        showPage(list,parseInt(pageNo)); // the second arguement takes the number from the button the user has clicked on. 
     }
-    showPage(list,parseInt(pageNo)); // the second arguement takes the number from the button the user has clicked on. 
 
     return console.log( parseInt(pageNo));
   });
@@ -209,20 +205,21 @@ function searchbarHTML(){
 
   // filtering names in the searchBar
   const searchBar = label.querySelector('input');
-  let newStudents = []; // empty array. Data items will be pushed to this array everytime the user types in a letter. It will also refresh eveytime a user types in a letter.
 
   searchBar.addEventListener('keyup', (e) =>{ //  a keyup event for the search bar.
-    const student = document.querySelectorAll('.student-item'); // collecting all student items on page
-    console.log(student);
-    newStudents = []; // resetting the newStudents varbiable before it enters the if statement down below.
-    for(let i =0; i < student.length; i++){
-      const searchBarvalue = e.target.value.toLowerCase();
-      const studentName = document.querySelectorAll('.student-details h3')[i].textContent.toLowerCase();
+    const searchBarvalue = e.target.value.toLowerCase();
+    const newStudents = []; // empty array. Data items will be pushed to this array everytime the user types in a letter. It will also refresh eveytime a user types in a letter.
+    for(let i =0; i < data.length; i++){
+      const studentName = data[i].name.first.toLowerCase() + ' ' + data[i].name.last.toLowerCase(); // takes first and last name of student and converts it to lower case.
       if(studentName.includes(searchBarvalue)){
-        newStudents.push(data[i]);
+        newStudents.push(data[i]); // pushes each student in the data list if the search matches student name
+        showPage(newStudents, 1);
+        addPagination(newStudents); // calling both showpage and addpagination functions
+      } else if (newStudents.length === 0 && searchBar.value.length != 0){ // checks if the length of students based on the search in empty and if the length of the searchbar is not 0.
+        listContainer.innerHTML = '<h1>Sorry no matches were found';
+        buttonContainer.innerHTML = '';
       }
     }
-    showPage(newStudents, 1); 
   })
 
 }
